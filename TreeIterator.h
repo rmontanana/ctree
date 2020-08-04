@@ -13,19 +13,20 @@ private:
     Tree<Type> baseTree;
     Node<Type> *iterator;
 public:
-    TreeIterator(Tree<Type>&tree): baseTree(tree), iterator(nullptr) {};
+    TreeIterator(Tree<Type> &tree) : baseTree(tree), iterator(nullptr) {};
+
     void begin();
+
     Node<Type> *next();
 };
 
 template<class Type>
-void TreeIterator<Type>::begin()
-{
+void TreeIterator<Type>::begin() {
     iterator = nullptr;
 }
+
 template<class Type>
-Node<Type> *TreeIterator<Type>::next()
-{
+Node<Type> *TreeIterator<Type>::next() {
     return iterator = iterator ? baseTree.succesor(iterator) : baseTree.getLeastValue(baseTree.getRoot());
 }
 

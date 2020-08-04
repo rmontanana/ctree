@@ -5,13 +5,13 @@
 #ifndef CTREE_NODE_H
 #define CTREE_NODE_H
 
-template <class Type>
+template<class Type>
 class Node {
 private:
     Type value;
     Node *left, *right;
 public:
-    Node(const Type value): value(value), left(nullptr), right(nullptr) {}
+    Node(const Type value) : value(value), left(nullptr), right(nullptr) {}
 
     Node<Type> *getLeft() const {
         return left;

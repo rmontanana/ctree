@@ -5,13 +5,13 @@
 #include <iostream>
 #include <string>
 
-template <class Type>
+template<class Type>
 Tree<Type>::Tree(const Type value) {
     root = insert(value);
 }
+
 template<class Type>
-Node<Type>* Tree<Type>::insertValue(Node<Type> *node, const Type value)
-{
+Node<Type> *Tree<Type>::insertValue(Node<Type> *node, const Type value) {
     if (node == nullptr) {
         return new Node(value);
     }
@@ -25,31 +25,34 @@ Node<Type>* Tree<Type>::insertValue(Node<Type> *node, const Type value)
     }
 }
 
-template <class Type>
-Node<Type>* Tree<Type>::insert(const Type value)
-{
+template<class Type>
+Node<Type> *Tree<Type>::insert(const Type value) {
     return root = insertValue(root, value);
 }
-template <class Type>void Tree<Type>::preOrder(const Node<Type>* node)
-{
+
+template<class Type>
+void Tree<Type>::preOrder(const Node<Type> *node) {
     std::cout << node->getValue() << ", ";
     if (node->getLeft() != nullptr) preOrder(node->getLeft());
     if (node->getRight() != nullptr) preOrder(node->getRight());
 }
-template <class Type>void Tree<Type>::postOrder(const Node<Type>* node)
-{
+
+template<class Type>
+void Tree<Type>::postOrder(const Node<Type> *node) {
     if (node->getLeft() != nullptr) postOrder(node->getLeft());
     if (node->getRight() != nullptr) postOrder(node->getRight());
     std::cout << node->getValue() << ", ";
 }
-template <class Type>void Tree<Type>::inOrder(const Node<Type>* node)
-{
+
+template<class Type>
+void Tree<Type>::inOrder(const Node<Type> *node) {
     if (node->getLeft() != nullptr) inOrder(node->getLeft());
     std::cout << node->getValue() << ", ";
     if (node->getRight() != nullptr) inOrder(node->getRight());
 }
-template <class Type>void Tree<Type>::print2D(const Node<Type>* node, int spaces)
-{
+
+template<class Type>
+void Tree<Type>::print2D(const Node<Type> *node, int spaces) {
     if (node == nullptr)
         return;
     spaces += 4;
@@ -57,8 +60,10 @@ template <class Type>void Tree<Type>::print2D(const Node<Type>* node, int spaces
     print2D(node->getRight(), spaces);
     print2D(node->getLeft(), spaces);
 }
-template <class Type>void Tree<Type>::print(enum typePrint type) {
-    switch(type) {
+
+template<class Type>
+void Tree<Type>::print(enum typePrint type) {
+    switch (type) {
         case typePrint::InOrder:
             inOrder(root);
             break;
@@ -74,6 +79,7 @@ template <class Type>void Tree<Type>::print(enum typePrint type) {
     }
     std::cout << std::endl;
 }
+
 template<class Type>
 void Tree<Type>::balance() {
     std::vector<Type> nodes;
@@ -81,9 +87,9 @@ void Tree<Type>::balance() {
     erase(root);
     root = rebuild(nodes, 0, nodes.size() - 1);
 }
+
 template<class Type>
-Node<Type>* Tree<Type>::rebuild(std::vector<Type> &nodes, int start, int end)
-{
+Node<Type> *Tree<Type>::rebuild(std::vector<Type> &nodes, int start, int end) {
     if (start > end)
         return nullptr;
     int mid = (start + end) / 2;
@@ -93,15 +99,16 @@ Node<Type>* Tree<Type>::rebuild(std::vector<Type> &nodes, int start, int end)
     node->setRight(rebuild(nodes, mid + 1, end));
     return node;
 }
+
 template<class Type>
-void Tree<Type>::erase(Node<Type> *node)
-{
+void Tree<Type>::erase(Node<Type> *node) {
     if (node == nullptr)
         return;
     erase(node->getLeft());
     erase(node->getRight());
     delete node;
 }
+
 template<class Type>
 void Tree<Type>::storeList(Node<Type> *node, std::vector<Type> &list) {
     if (node == nullptr) {
@@ -112,14 +119,14 @@ void Tree<Type>::storeList(Node<Type> *node, std::vector<Type> &list) {
     list.push_back(node->getValue());
     storeList(node->getRight(), list);
 }
+
 template<class Type>
-bool Tree<Type>::search(const Type value)
-{
+bool Tree<Type>::search(const Type value) {
     return searchValue(root, value) != nullptr;
 }
+
 template<class Type>
-Node<Type> *Tree<Type>::searchValue(Node<Type> * node, const Type value)
-{
+Node<Type> *Tree<Type>::searchValue(Node<Type> *node, const Type value) {
     if (node == nullptr || node->getValue() == value) {
         return node;
     }
@@ -128,22 +135,22 @@ Node<Type> *Tree<Type>::searchValue(Node<Type> * node, const Type value)
     }
     return searchValue(node->getLeft(), value);
 }
+
 template<class Type>
-void Tree<Type>::searchValueAndFather(const Type value, Node<Type>** node, Node<Type>**father)
-{
+void Tree<Type>::searchValueAndFather(const Type value, Node<Type> **node, Node<Type> **father) {
     Node<Type> *current = getRoot(), *relative = nullptr;
     bool exitLoop = current == nullptr || current->getValue() == value;
     while (!exitLoop) {
         relative = current;
         current = value > current->getValue() ? current->getRight() : current->getLeft();
-        exitLoop = current == nullptr ||  current->getValue() == value;
+        exitLoop = current == nullptr || current->getValue() == value;
     }
     *node = current;
     *father = relative;
 }
+
 template<class Type>
-bool Tree<Type>::remove(const Type value)
-{
+bool Tree<Type>::remove(const Type value) {
     Node<Type> *node, *father;
     searchValueAndFather(value, &node, &father);
     if (node == nullptr)
@@ -157,7 +164,7 @@ bool Tree<Type>::remove(const Type value)
             father->setLeft(nullptr);
         else
             father->setRight(nullptr);
-        delete(node);
+        delete (node);
         return true;
     } else if (node->getRight() && node->getLeft()) {
         //Case 2 Node has two children
@@ -175,13 +182,13 @@ bool Tree<Type>::remove(const Type value)
         } else {
             father->setRight(node->getLeft() ? node->getLeft() : node->getRight());
         }
-        delete(node);
+        delete (node);
         return true;
     }
 }
+
 template<class Type>
-Node<Type> *Tree<Type>::succesor(Node<Type> *node)
-{
+Node<Type> *Tree<Type>::succesor(Node<Type> *node) {
     /*
      *
      *      Input: node, root // node is the node whose Inorder successor is needed.
@@ -196,12 +203,11 @@ Node<Type> *Tree<Type>::succesor(Node<Type> *node)
         return getLeastValue(node->getRight());
     }
     Node<Type> *p = getRoot(), *succesor = nullptr;
-    while(p != nullptr) {
+    while (p != nullptr) {
         if (node->getValue() < p->getValue()) {
             succesor = p;
             p = p->getLeft();
-        }
-        else if (node->getValue() > p->getValue())
+        } else if (node->getValue() > p->getValue())
             p = p->getRight();
         else
             // exit while
@@ -211,12 +217,11 @@ Node<Type> *Tree<Type>::succesor(Node<Type> *node)
 }
 
 template<class Type>
-Node<Type> *Tree<Type>::getLeastValue(Node<Type> *node)
-{
+Node<Type> *Tree<Type>::getLeastValue(Node<Type> *node) {
     if (node == nullptr) {
         return nullptr;
     }
-    while(node->getLeft() != nullptr)
+    while (node->getLeft() != nullptr)
         node = node->getLeft();
     return node;
 }
