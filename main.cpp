@@ -7,7 +7,7 @@ using namespace std;
 const int NUM_VALUES = 17;
 const int MAX_VALUE = 50;
 
-void buildTree(Tree<int> *);
+void buildTree(Tree<int> &);
 
 void printTree(Tree<int>);
 
@@ -24,7 +24,7 @@ int main() {
     Tree<int> tree = Tree<int>();
     srand((unsigned) time(0));
     cout << "Hello, World of binary trees!" << endl;
-    buildTree(&tree);
+    buildTree(tree);
     printTree(tree);
     tryIterator(tree);
     balanceTree(&tree);
@@ -35,13 +35,13 @@ int main() {
     return 0;
 }
 
-void buildTree(Tree<int> *tree) {
+void buildTree(Tree<int> &tree) {
     int value;
     for (int i = 0; i < NUM_VALUES; i++) {
         value = (rand() % MAX_VALUE) + 1;
         //value = i;
         cout << value << ", ";
-        tree->insert(value);
+        tree.insert(value);
     }
     cout << endl;
 }
@@ -81,16 +81,16 @@ void removeNodes(Tree<int> tree) {
 }
 
 void tryIterator(Tree<int> tree) {
-    TreeIterator<int> iterator = TreeIterator(tree);
+    TreeIterator<int> iterator = TreeIterator<int>(tree);
     Node<int> *next;
     iterator.begin();
     cout << "Begin iteration" << endl;
-    while (next = iterator.next()) {
+    while ((next = iterator.next())) {
         cout << "next value is: " << next->getValue() << endl;
     }
     cout << "And again..." << endl;
     iterator.begin();
-    while (next = iterator.next()) {
+    while ((next = iterator.next())) {
         cout << "next value is again: " << next->getValue() << endl;
     }
 

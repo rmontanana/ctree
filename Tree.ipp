@@ -13,7 +13,7 @@ Tree<Type>::Tree(const Type value) {
 template<class Type>
 Node<Type> *Tree<Type>::insertValue(Node<Type> *node, const Type value) {
     if (node == nullptr) {
-        return new Node(value);
+        return new Node<Type>(value);
     }
     if (value < node->getValue()) {
         node->setLeft(insertValue(node->getLeft(), value));
@@ -76,6 +76,8 @@ void Tree<Type>::print(enum typePrint type) {
         case typePrint::in2D:
             print2D(root, 0);
             break;
+        default:
+            break;
     }
     std::cout << std::endl;
 }
@@ -94,7 +96,7 @@ Node<Type> *Tree<Type>::rebuild(std::vector<Type> &nodes, int start, int end) {
         return nullptr;
     int mid = (start + end) / 2;
     Type nodeValue = nodes[mid];
-    Node<Type> *node = new Node(nodeValue);
+    Node<Type> *node = new Node<Type>(nodeValue);
     node->setLeft(rebuild(nodes, start, mid - 1));
     node->setRight(rebuild(nodes, mid + 1, end));
     return node;
